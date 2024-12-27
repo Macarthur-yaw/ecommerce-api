@@ -1,5 +1,4 @@
-type cartsSchema={
+export type cartsSchema={
 
-    userId:string,
-productID:string
+ 
 }

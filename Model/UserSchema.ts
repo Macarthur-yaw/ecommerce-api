@@ -29,7 +29,14 @@ password:{
 verified:{
     type:Boolean,
     default:false
+},
+userCarts:{
+    type:[{String}]
+},
+favoriteCarts:{
+    type:[{String}]
 }
+
     }
 )
 

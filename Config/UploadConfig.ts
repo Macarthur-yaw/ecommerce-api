@@ -6,7 +6,7 @@ import cloudinary from './CloudinaryConfig';
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params:<any> {
-    folder: 'uploads', 
+    folder: './uploads/', 
     allowed_formats: ['jpg', 'jpeg', 'png'], 
     public_id: (req: any, file: any) => `image_${Date.now()}`, 
   },

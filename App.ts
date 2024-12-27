@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Router } from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import router from "./Controller/UserController/User"
@@ -11,11 +11,13 @@ import swaggerDocs from "./Config/SwaggerConfig"
 
 import { productRouter } from "./Controller/ProductController/Product"
 import fileRouter from "./Controller/ProductController/Upload"
-app.use(cors());
-app.use(express.json())
 
-app.use("/api/products",productRouter)
+app.use(cors());
+
+
 app.use("/api",fileRouter)
+app.use("/api/products",productRouter)
+
 app.use("/api",router)
 app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocs));
 

@@ -1,53 +1,51 @@
-import { Router, Request, Response } from 'express';
-import upload from '../../Config/Upload';
-const fileRouter = Router();
+// Controller/ProductController/Upload.js
+import express from 'express'
+import multer from 'multer'
+import path from 'path'
 
-/**
- * @swagger
- * /upload:
- *   post:
- *     summary: Upload an image to Cloudinary
- *     description: This endpoint allows the user to upload an image file to Cloudinary.
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - name: image
- *         in: formData
- *         description: The image file to be uploaded.
- *         required: true
- *         type: file
- *     responses:
- *       200:
- *         description: File uploaded successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: File uploaded successfully
- *                 imageUrl:
- *                   type: string
- *                   example: https://res.cloudinary.com/demo/image/upload/v1645699900/uploads/image_1617306783000.jpg
- *       400:
- *         description: No file uploaded
- *         content:
- *           text/plain:
- *             schema:
- *               type: string
- *               example: No file uploaded
- */
-fileRouter.post('/upload', upload.single('image'), (req: Request, res: Response) => {
-    console.log(req.file);
-  if (req.file) {
-    res.json({
-      message: 'File uploaded successfully',
-      imageUrl: req.file.path, 
-    });
-  } else {
-    res.status(400).send('No file uploaded');
-  }
-});
+const fileRouter = express.Router()
 
-export default fileRouter;
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+       
+        cb(null, true)
+    },
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+})
+
+fileRouter.post('/upload-file', upload.single('file'), (req, res) => {
+    try {
+       
+
+        if (!req.file) {
+           res.status(400).json({ error: 'Please select a file to upload' })
+        return;
+          }
+
+        res.status(200).json({
+            message: 'File uploaded successfully',
+            file: {
+                filename: req.file.filename,
+                path: req.file.path
+            }
+        })
+    } catch (error) {
+        console.error('Upload error:', error)
+        res.status(500).json({ error: 'File upload failed' })
+    }
+})
+
+export default fileRouter

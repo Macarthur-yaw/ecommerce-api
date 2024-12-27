@@ -1,3 +1,4 @@
+
 enum userRoles{
     user="USER",
     admin="ADMIN"
@@ -9,6 +10,8 @@ enum userRoles{
         date:Date
         role:userRoles
         ,verified:boolean
+        userCarts:Array<string>,
+        favoriteCarts:Array<string>
     }
 
     export {userRoles,userSchema};
