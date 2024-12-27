@@ -20,7 +20,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./Controller/UserController/*.ts'], 
+  apis: ['./Controller/*/*.ts'], 
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
