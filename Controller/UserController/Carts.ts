@@ -30,7 +30,7 @@ const cartrouter =express.Router()
  *               email:
  *                 type: string
  *                 format: email
- *                 example: user@example.com
+ *                 example: arthurkevin1260@gmail.com
  *     responses:
  *       200:
  *         description: List of user carts
